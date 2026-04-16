@@ -1,0 +1,100 @@
+{
+  "name": "decoyd",
+  "version": "1.0.0",
+  "description": "Local honeypot and deception system",
+  "author": "0x127",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --linux AppImage --win portable",
+    "build:linux": "electron-builder --linux AppImage",
+    "build:win": "electron-builder --win portable",
+    "build:win-installer": "electron-builder --win nsis",
+    "build:mac": "electron-builder --mac dmg",
+    "release": "electron-builder --publish always"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "nodemailer": "^6.9.14",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^29.4.6",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.decoyd.app",
+    "productName": "Decoyd",
+    "copyright": "Copyright 2026",
+
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
+
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "node_modules/**/*",
+      "build/icon.ico",
+      "build/icon.png",
+      "build/icon.icns"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "category": "Utility",
+      "icon": "build/icon.png"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "executableName": "Decoyd"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "build/icon.icns"
+    },
+    "portable": {
+      "artifactName": "Decoyd.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "shortcutName": "Decoyd",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "appImage": {
+      "artifactName": "Decoyd.AppImage"
+    }
+  }
+}

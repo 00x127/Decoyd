@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Decoyd</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      <span>Decoyd</span>
+    </div>
+
+    <div class="status-pill" id="status-pill">
+      <span class="dot"></span>
+      <span id="status-pill-label">Monitoring Off</span>
+    </div>
+
+    <nav>
+      <button class="nav-item active" data-tab="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-tab="bait-files">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <span>Bait Files</span>
+      </button>
+      <button class="nav-item" data-tab="event-log">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span>Event Log</span>
+        <span class="badge" id="log-badge" style="display:none">0</span>
+      </button>
+      <button class="nav-item" data-tab="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-stats">
+      <div class="sstat"><span>Bait files</span><span id="ss-files">-</span></div>
+      <div class="sstat"><span>Total events</span><span id="ss-events">-</span></div>
+      <div class="sstat"><span>Today</span><span id="ss-today">-</span></div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <div id="tab-dashboard" class="tab active">
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p>Overview of your deception system</p>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div><div class="card-val" id="dsh-status">Offline</div><div class="card-lbl">Status</div></div>
+        </div>
+        <div class="card">
+          <div class="card-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div><div class="card-val" id="dsh-files">0</div><div class="card-lbl">Bait Files</div></div>
+        </div>
+        <div class="card">
+          <div class="card-icon amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div><div class="card-val" id="dsh-today">0</div><div class="card-lbl">Events Today</div></div>
+        </div>
+        <div class="card">
+          <div class="card-icon green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div><div class="card-val" id="dsh-total">0</div><div class="card-lbl">Total Events</div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="panel flex2">
+          <div class="panel-head"><h2>Recent Events</h2><button class="link-btn" data-tab-link="event-log">View all</button></div>
+          <div id="recent-list" class="recent-list"><div class="empty">No events yet</div></div>
+        </div>
+        <div class="panel flex1">
+          <div class="panel-head"><h2>Quick Actions</h2></div>
+          <div class="actions">
+            <button class="act primary" id="toggle-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span id="toggle-label">Start Monitoring</span>
+            </button>
+            <button class="act secondary" data-tab-link="bait-files">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+              <span>Create Bait Files</span>
+            </button>
+            <button class="act ghost" id="clear-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+              <span>Clear Logs</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-bait-files" class="tab">
+      <div class="page-header">
+        <h1>Bait Files</h1>
+        <p>Deploy decoy files and monitor them for any access, copy or modification</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Deploy Preset Files</h2></div>
+        <div class="form-section">
+          <div class="field">
+            <label class="label">Target Directory</label>
+            <div class="input-row">
+              <input class="input mono" id="dir-input" readonly placeholder="Click Browse to pick a directory...">
+              <button class="btn-secondary" id="browse-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                Browse
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Included files</label>
+            <div class="file-preview">
+              <div class="fp-item"><span class="fp-icon">📄</span><div><div class="fp-name">passwords.txt</div><div class="fp-desc">Fake creds - email, banking, Minecraft, crypto</div></div></div>
+              <div class="fp-item"><span class="fp-icon">🗂️</span><div><div class="fp-name">wallet_backup.json</div><div class="fp-desc">Fake crypto wallet with BTC/ETH and exchange API keys</div></div></div>
+              <div class="fp-item"><span class="fp-icon">📊</span><div><div class="fp-name">accounts.xlsx</div><div class="fp-desc">Fake spreadsheet - logins, card numbers, coords</div></div></div>
+            </div>
+          </div>
+          <div class="form-footer">
+            <button class="btn-primary" id="deploy-btn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Deploy Files
+            </button>
+            <span class="hint" id="deploy-hint">Select a directory first</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Custom Bait File</h2></div>
+        <div class="form-section">
+          <div class="field-row">
+            <div class="field flex1">
+              <label class="label" for="custom-name">File name</label>
+              <input class="input mono" id="custom-name" type="text" placeholder="e.g. ssh_keys.txt, notes.md">
+            </div>
+            <div class="field flex1">
+              <label class="label">Directory</label>
+              <div class="input-row">
+                <input class="input mono" id="custom-dir" readonly placeholder="Browse...">
+                <button class="btn-secondary" id="custom-browse-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Browse
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="custom-content">File contents</label>
+            <textarea class="input mono custom-textarea" id="custom-content" placeholder="Type or paste fake content here..." rows="8"></textarea>
+          </div>
+          <div class="form-footer">
+            <button class="btn-primary" id="custom-create-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Create File
+            </button>
+            <span class="hint" id="custom-hint">Name, directory and content required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Active Bait Files</h2>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="count-tag" id="active-count">0 files</span>
+            <button class="btn-danger sm-danger" id="clear-all-files-btn" style="display:none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+              Clear All
+            </button>
+          </div>
+        </div>
+        <div id="active-files"><div class="empty">No bait files yet</div></div>
+      </div>
+    </div>
+
+    <div id="tab-event-log" class="tab">
+      <div class="page-header">
+        <h1>Event Log</h1>
+        <p>All tamper, read and copy events from monitored bait files</p>
+      </div>
+      <div class="panel">
+        <div class="log-toolbar">
+          <div class="filters">
+            <button class="filter active" data-filter="all">All</button>
+            <button class="filter" data-filter="accessed">Read</button>
+            <button class="filter" data-filter="copied">Copied</button>
+            <button class="filter" data-filter="modified">Modified</button>
+            <button class="filter" data-filter="moved">Moved</button>
+            <button class="filter" data-filter="deleted">Deleted</button>
+          </div>
+          <div class="toolbar-right">
+            <input class="search" id="log-search" placeholder="Search..." type="search">
+            <button class="btn-ghost sm" id="clear-log-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+              Clear
+            </button>
+            <button class="btn-ghost sm" id="export-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="log-table">
+            <thead><tr><th>Timestamp</th><th>Filename</th><th>Event</th><th>Details</th></tr></thead>
+            <tbody id="log-tbody"><tr><td colspan="4" class="empty-cell">No events recorded</td></tr></tbody>
+          </table>
+        </div>
+        <div class="table-footer"><span id="log-count">0 entries</span></div>
+      </div>
+    </div>
+
+    <div id="tab-settings" class="tab">
+      <div class="page-header">
+        <h1>Settings</h1>
+        <p>Detection, alerts, stealth mode and email</p>
+      </div>
+      <div class="settings-list">
+
+        <div class="panel">
+          <div class="panel-head"><h2>Monitoring</h2></div>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div class="setting-info"><div class="setting-name">Active Monitoring</div><div class="setting-desc">Watch bait files for reads, copies, modifications and deletions</div></div>
+              <button class="toggle" id="s-monitor" role="switch" aria-checked="false"><span class="toggle-knob"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Alerts</h2></div>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div class="setting-info"><div class="setting-name">Silent Mode</div><div class="setting-desc">Suppress desktop notifications so the attacker has no idea they tripped something. Events still get logged and email still fires.</div></div>
+              <button class="toggle" id="s-silent" role="switch" aria-checked="false"><span class="toggle-knob"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Detection Methods</h2></div>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div class="setting-info">
+                <div class="setting-name">Read Detection</div>
+                <div class="setting-desc">Detects when anything opens a bait file - <code>cat</code>, <code>type</code>, Notepad, Python, anything. Uses inotify on Linux, Windows Security Event Log (Event ID 4663) on Windows, atime polling as fallback. <span class="plat-note" id="plat-note"></span></div>
+              </div>
+              <button class="toggle" id="s-reads" role="switch" aria-checked="true"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="sep"></div>
+            <div class="setting-row">
+              <div class="setting-info"><div class="setting-name">Copy Detection</div><div class="setting-desc">Watches Desktop, Documents, Downloads, Temp and cloud folders for new files whose SHA-256 hash matches any bait file. Catches <code>cp</code>, <code>copy</code>, drag-and-drop, anything.</div></div>
+              <button class="toggle" id="s-copies" role="switch" aria-checked="true"><span class="toggle-knob"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Stealth Mode</h2></div>
+          <div class="settings-body">
+            <div class="setting-row">
+              <div class="setting-info"><div class="setting-name">Run in Background</div><div class="setting-desc">Hides from the taskbar when the window is closed. Keeps running in the tray - nothing shows in Alt+Tab or the taskbar.</div></div>
+              <button class="toggle" id="s-stealth" role="switch" aria-checked="false"><span class="toggle-knob"></span></button>
+            </div>
+            <div class="info-box stealth-box" id="stealth-note" style="display:none">Stealth mode on. Close this window to hide it. Right-click the tray icon to quit.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Email Alerts</h2>
+            <div class="inline-row">
+              <span class="small-text">Send email on tamper detection</span>
+              <button class="toggle sm-toggle" id="s-email" role="switch" aria-checked="false"><span class="toggle-knob"></span></button>
+            </div>
+          </div>
+          <div id="email-fields" class="settings-body hidden">
+            <p class="info-box">Any SMTP works - Gmail (smtp.gmail.com:587), Brevo, Mailgun, or a temp-mail provider.</p>
+            <div class="field-row">
+              <div class="field flex1"><label class="label" for="e-to">Send alerts to</label><input class="input" id="e-to" type="email" placeholder="you@example.com"></div>
+              <div class="field flex1"><label class="label" for="e-from">From address</label><input class="input" id="e-from" type="email" placeholder="alerts@example.com"></div>
+            </div>
+            <div class="field-row">
+              <div class="field flex2"><label class="label" for="e-host">SMTP host</label><input class="input" id="e-host" type="text" placeholder="smtp.gmail.com"></div>
+              <div class="field flex1"><label class="label" for="e-port">Port</label><input class="input" id="e-port" type="number" placeholder="587" min="1" max="65535"></div>
+            </div>
+            <div class="field-row">
+              <div class="field flex1"><label class="label" for="e-user">Username</label><input class="input" id="e-user" type="text" placeholder="your@email.com"></div>
+              <div class="field flex1"><label class="label" for="e-pass">Password / App password</label><input class="input" id="e-pass" type="password" placeholder="..."></div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-primary" id="save-btn">Save Settings</button>
+              <span class="save-ok" id="save-ok"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Data</h2></div>
+          <div class="settings-body">
+            <div class="danger-row">
+              <div><div class="setting-name">Clear Event Log</div><div class="setting-desc">Delete all recorded events permanently</div></div>
+              <button class="btn-danger" id="danger-clear">Clear Logs</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toasts"></div>
+<script src="app.js"></script>
+</body>
+</html>
