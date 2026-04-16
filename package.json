@@ -7,11 +7,10 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --linux AppImage --win portable",
-    "build:linux": "electron-builder --linux AppImage",
+    "build:linux": "electron-builder --linux",
     "build:win": "electron-builder --win portable",
     "build:win-installer": "electron-builder --win nsis",
-    "build:mac": "electron-builder --mac dmg",
-    "release": "electron-builder --publish always"
+    "build:mac": "electron-builder --mac dmg"
   },
   "dependencies": {
     "chokidar": "^3.6.0",
@@ -26,13 +25,6 @@
     "appId": "com.decoyd.app",
     "productName": "Decoyd",
     "copyright": "Copyright 2026",
-
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ],
-
     "files": [
       "main.js",
       "preload.js",
@@ -49,11 +41,15 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "category": "Utility",
@@ -63,7 +59,9 @@
       "target": [
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "build/icon.ico",
@@ -73,7 +71,10 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "category": "public.app-category.utilities",
@@ -95,6 +96,12 @@
     },
     "appImage": {
       "artifactName": "Decoyd.AppImage"
+    },
+    "deb": {
+      "artifactName": "Decoyd.deb"
+    },
+    "dmg": {
+      "artifactName": "Decoyd-${arch}.dmg"
     }
   }
 }

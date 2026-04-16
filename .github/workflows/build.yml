@@ -8,17 +8,20 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
             platform: win
-            artifact: dist/Decoyd.exe
+            artifacts: dist/Decoyd.exe
+
           - os: ubuntu-latest
             platform: linux
-            artifact: dist/*.AppImage
+            artifacts: "dist/Decoyd.AppImage\ndist/Decoyd.deb"
+
           - os: macos-latest
             platform: mac
-            artifact: dist/*.dmg
+            artifacts: "dist/Decoyd-x64.dmg\ndist/Decoyd-arm64.dmg"
 
     runs-on: ${{ matrix.os }}
 
@@ -35,17 +38,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Linux build tools
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y fakeroot dpkg
+
       - name: Build
         run: npm run build:${{ matrix.platform }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: decoyd-${{ matrix.platform }}
-          path: ${{ matrix.artifact }}
-          if-no-files-found: error
+          path: |
+            dist/Decoyd.exe
+            dist/Decoyd.AppImage
+            dist/Decoyd.deb
+            dist/Decoyd-x64.dmg
+            dist/Decoyd-arm64.dmg
+          if-no-files-found: ignore
 
   release:
     needs: build
@@ -60,12 +70,30 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Create GitHub Release
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
+          name: Decoyd ${{ github.ref_name }}
+          body: |
+            ## Download
+
+            | Platform | File |
+            |----------|------|
+            | Windows  | `Decoyd.exe` — run directly, no install needed |
+            | Linux    | `Decoyd.AppImage` — `chmod +x` then run. Needs `libfuse2t64` (Ubuntu 22+) or `libfuse2` |
+            | Linux    | `Decoyd.deb` — `sudo dpkg -i Decoyd.deb` |
+            | macOS (Apple Silicon) | `Decoyd-arm64.dmg` |
+            | macOS (Intel) | `Decoyd-x64.dmg` |
+
+            ## Linux quick start
+            ```bash
+            chmod +x Decoyd.AppImage
+            sudo apt install libfuse2t64   # Ubuntu 22.04+
+            ./Decoyd.AppImage
+            ```
           files: artifacts/**/*
-          generate_release_notes: true
           draft: false
           prerelease: false
+          generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,2 +1,16 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Default: normalize line endings to LF in the repo
+* text=auto eol=lf
+
+# Explicitly mark binary files so Git never touches them
+*.ico   binary
+*.icns  binary
+*.png   binary
+*.gif   binary
+*.jpg   binary
+*.jpeg  binary
+*.zip   binary
+*.AppImage binary
+*.exe   binary
+*.dmg   binary
+*.deb   binary
+*.node  binary
