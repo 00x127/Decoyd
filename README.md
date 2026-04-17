@@ -4,7 +4,9 @@
 
 <h1 align="center">Decoyd</h1>
 
-A local honeypot and deception system for Windows, Linux, and macOS. Deploy convincing fake files across your machine and get alerted the moment anything touches them.
+<p align="center">
+  A local honeypot and deception system for Windows, Linux, and macOS
+</p>
 
 <p align="center">
   <img src="/assets/demo.gif" width="700"/>
@@ -14,7 +16,9 @@ A local honeypot and deception system for Windows, Linux, and macOS. Deploy conv
 
 ## What it does
 
-Decoyd plants bait files - fake password lists, crypto wallets, credential spreadsheets - and silently monitors them. If anything reads, copies, modifies, or moves them, you get a desktop notification and optional email alert within seconds.
+Decoyd plants bait files - fake password lists, crypto wallets, credential spreadsheets - and silently monitors them.
+
+If anything reads, copies, modifies, or moves them, you get a desktop notification and optional email alert within seconds.
 
 | Event                | Detection                                   |
 | -------------------- | ------------------------------------------- |
@@ -54,14 +58,14 @@ Download from the [Releases](../../releases) page.
 
 ### AppImage
 
-```bash
+```bash id="2zqk3p"
 chmod +x Decoyd.AppImage
 ./Decoyd.AppImage
 ```
 
 **Dependencies (FUSE):**
 
-```bash
+```bash id="x5r8cw"
 # Ubuntu / Debian (new)
 sudo apt install libfuse2t64
 
@@ -77,7 +81,7 @@ sudo pacman -S fuse2
 
 **No FUSE?**
 
-```bash
+```bash id="l7y2om"
 ./Decoyd.AppImage --appimage-extract
 cd squashfs-root
 ./AppRun
@@ -85,23 +89,9 @@ cd squashfs-root
 
 ---
 
-### .deb (Ubuntu / Debian)
-
-```bash
-sudo dpkg -i Decoyd.deb
-```
-
-Run from app menu or:
-
-```bash
-decoyd
-```
-
----
-
 ### Better read detection (optional)
 
-```bash
+```bash id="yq9r1u"
 # Ubuntu / Debian
 sudo apt install inotify-tools
 
@@ -113,17 +103,3 @@ sudo pacman -S inotify-tools
 ```
 
 Falls back to polling if not installed.
-
----
-
-## Email setup
-
-| Provider | Host                  | Port |
-| -------- | --------------------- | ---- |
-| Gmail    | smtp.gmail.com        | 587  |
-| Brevo    | smtp-relay.brevo.com  | 587  |
-| Mailgun  | smtp.mailgun.org      | 587  |
-| Outlook  | smtp-mail.outlook.com | 587  |
-
-Gmail requires an App Password:
-[https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
