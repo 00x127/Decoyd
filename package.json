@@ -2,7 +2,10 @@
   "name": "decoyd",
   "version": "1.0.0",
   "description": "Local honeypot and deception system",
-  "author": "0x127",
+  "author": {
+    "name": "0x127",
+    "email": "contact@decoyd.app"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -53,7 +56,8 @@
         }
       ],
       "category": "Utility",
-      "icon": "build/icon.png"
+      "icon": "build/icon.png",
+      "maintainer": "0x127 <contact@decoyd.app>"
     },
     "win": {
       "target": [
@@ -72,8 +76,8 @@
         {
           "target": "dmg",
           "arch": [
-            "x64",
-            "arm64"
+            "arm64",
+            "x64"
           ]
         }
       ],
